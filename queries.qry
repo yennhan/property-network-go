@@ -1,0 +1,431 @@
+
+//all the tradehouse transaction query
+query getTradeHouseContract {
+  description: "allow people to get the tradehouse contract"
+  statement: 
+  SELECT org.acme.model.TradeHouse
+    WHERE (newOwner==_$OwnerPARAM)
+}
+query getallTradehouse{
+  description: "allow people to get the tradehouse contract"
+  statement: 
+  SELECT org.acme.model.TradeHouse
+}
+query get_lawyer_approve_HouseTrade {
+  description: "Get the lawyer that has approved the house trading"
+  statement:
+  SELECT org.acme.model.TradeHouse
+    WHERE (lawyer == _$lawyer_id_PARAM)
+}
+
+query get_trade_house_landTitle {
+  description: "Get the tradehouse land title between both party"
+  statement: 
+  SELECT org.acme.model.TradeHouse
+    WHERE (landtitle == _$land_title_PARAM)
+}
+//Tradehouse through dates query
+query getTradehouseexactDate{
+  description: "Get the trade house with the exact required date"
+  statement:
+  SELECT org.acme.model.TradeHouse
+    WHERE (h_transactedDateTime == _$datePARAM)
+}
+query getTradedHouseWithDate{
+  description: "Get trade house with younger date than user insert"
+  statement: 
+  SELECT org.acme.model.TradeHouse
+    WHERE (h_transactedDateTime >_$datePARAM)
+}
+query getTradedHouseWithDateAbove{
+  description: "Get trade house with older date than user insert"
+  statement: 
+  SELECT org.acme.model.TradeHouse
+    WHERE (_$datePARAM > h_transactedDateTime )
+}
+query getTradedHouseWithDateInBetween{
+  description: "Get trade house with dates that is in between"
+  statement: 
+  SELECT org.acme.model.TradeHouse
+    WHERE ((_$beforedatePARAM < h_transactedDateTime ) AND (_$afterdatePARAM > h_transactedDateTime))
+}
+
+// all the land titles possible query
+query getLandTitle{
+  description: "return all transactions made (not system transactions)"
+  statement: 
+  SELECT org.acme.model.LandTitle
+}
+query get_private_caveat_and_ownerid {
+  description: "return all owner with private caveat and ownerid"
+  statement:
+  SELECT org.acme.model.LandTitle
+    WHERE (private_caveat == _$private_caveat AND ownerid == _$ownerPARAM)
+}
+
+query getLandTitlewithOwner{
+  description: "return land title with thorugh ownerid search query"
+  statement: 
+  SELECT org.acme.model.LandTitle
+    WHERE (ownerid==_$ownerPARAM)
+}
+query getLandTitlewithNegeri{
+  description: "return all query about negeri"
+  statement: 
+  SELECT org.acme.model.LandTitle
+    WHERE (Negeri==_$NegeriPARAM)
+}
+query getLandTitlewithDaerah{
+  description: "return all query with Daerah"
+  statement: 
+  SELECT org.acme.model.LandTitle
+    WHERE (Daerah==_$DaerahPARAM)
+}
+query getLandTitlewithlocationtype{
+  description: "return all query through the type of location"
+  statement: 
+  SELECT org.acme.model.LandTitle
+    WHERE (location_type==_$location_type)
+}
+query getLandTitlewithLOTNo {
+  description: "Get land title through the LOT number"
+  statement:
+  SELECT org.acme.model.LandTitle
+    WHERE (no_lot == _$LotNumber)
+}
+query getLandTitlewithLotSize{
+  description: "Get land title through the LOT size"
+  statement:
+  SELECT org.acme.model.LandTitle
+    WHERE (luas_lot == _$LotSize)
+}
+query getLandTitleThroughTypeOfLand {
+  description: "Get the land title through the type of land"
+  statement:
+  SELECT org.acme.model.LandTitle
+    WHERE (kategori_tanah == _$type_of_land)
+}
+
+
+//land title through dates
+query getLandTitlethroughDate {
+  description: "return all the qeury older than data parameter"
+  statement:
+  SELECT org.acme.model.LandTitle
+    WHERE (_$daftaranPARAM > daftaran_pada)    
+}
+query getLandTitlethrougholderdate {
+  description: "return all the query that is newer than data parameter"
+  statement:
+  SELECT org.acme.model.LandTitle
+    WHERE (_$daftaranPARAM < daftaran_pada) 
+}
+query getLandTitlethroughBETWEEENdate {
+  description: "return all the query that is between than data parameter"
+  statement:
+  SELECT org.acme.model.LandTitle
+    WHERE ((daftaran_pada < _$larger_daftaranPARAM) AND ( _$smaller_daftaranPARAM < daftaran_pada))
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+query getLandTitlePerlembagaanPawai {
+  description: "return the query about the type of getLandTitlePerlembagaanPawai"
+  statement:
+  SELECT org.acme.model.LandTitle
+    WHERE (no_lembaran_piawai == _$no_lembaran_piawai)
+}
+
+query getLandTitleTypeofUsageOfland{
+  description: "The usage of land which is optional, hence some query might not recieved"
+  statement:
+  SELECT org.acme.model.LandTitle
+    WHERE (penggunaan_tanah == _$usage_of_land)
+}
+
+//all the loan_agreement queries
+query getLoanAgreeementByBank{
+  description: "return all query through the loan agreement that is of a specific bank"
+  statement: 
+  SELECT org.acme.model.LoanAgreement
+    WHERE (_$bankPARAM == bank)
+}
+
+
+//the loan options of YES, CCRIS , CTOS
+query getLoanAgreeemntBankApprovedStatus{
+  description: "return all query through the loan agreement with bank approval status that is Yes"
+  statement: 
+  SELECT org.acme.model.LoanAgreement
+    WHERE (the_approval == "Yes") 
+}
+query getLoanAgreeemntCCRIS_Status{
+  description: "return all query through the loan agreement with bank approval status that is CCRIS not approved"
+  statement: 
+  SELECT org.acme.model.LoanAgreement
+    WHERE (the_approval == "ccris_not_approve")
+}
+query getLoanAgreeemntCTOS_Status{
+  description: "return all query through the loan agreement with bank approval status that is  ctos_not_approve "
+  statement: 
+  SELECT org.acme.model.LoanAgreement
+    WHERE (the_approval == "ctos_not_approve")
+}
+
+
+//loan_term for the parameter
+query getSmallerLoanAgreementQueries{
+  description: "return all query through the loan agreement with range of term smaller than required"
+  statement: 
+  SELECT org.acme.model.LoanAgreement
+    WHERE (loan_term < _$loan_termPARAM) 
+}
+query getLargerLoanAgreeementQueries{
+  description: "return all query through the loan agreement with range of term larger than required"
+  statement: 
+  SELECT org.acme.model.LoanAgreement
+    WHERE (_$loan_termPARAM < loan_term)
+}
+query getLoanAgreementBetweenLoanTerm {
+  description: "return all the query that is between the loan agreement data parameter"
+  statement:
+  SELECT org.acme.model.LoanAgreement
+    WHERE ((loan_term < _$larger_loan_termPARAM) AND ( _$smaller_loan_termPARAM < loan_term))
+}
+
+
+//loan_amount for the parameter
+query getSmallerLoanAmount{
+  description: "return loan amount smaller than parameter"
+  statement: 
+  SELECT org.acme.model.LoanAgreement
+    WHERE (loan_amount < _$loan_amountPARAM) 
+}
+query getLargerLoanAmount{
+  description: "return loan amount larger than parameter"
+  statement: 
+  SELECT org.acme.model.LoanAgreement
+    WHERE (_$loan_amountPARAM < loan_amount)
+}
+query getLoanAmountinbetween {
+  description: "return loan amount in between the parameter"
+  statement:
+  SELECT org.acme.model.LoanAgreement
+    WHERE ((loan_amount < _$Larger_loan_amountPARAM) AND ( _$Smaller_loan_amountPARAM < loan_amount))
+}
+
+
+//loan_amount for the parameter
+query getInterestRateExactAmount{
+  description: "return all agreements interest rate that is of exact amount "
+  statement:
+  SELECT org.acme.model.LoanAgreement
+    WHERE (interest_rate == _$interest_ratePARAM)
+}
+query getInterestRateSmallerAmount{
+  description: "return interest rate that is smaller than parameter"
+  statement: 
+  SELECT org.acme.model.LoanAgreement
+    WHERE (interest_rate < _$interest_ratePARAM) 
+}
+query getLargerInterestRateAmount{
+  description: "return loan interest_rate larger than parameter"
+  statement: 
+  SELECT org.acme.model.LoanAgreement
+    WHERE (_$interest_ratePARAM < interest_rate)
+}
+query getInterestRateInbetween {
+  description: "return loan interest rate in between the parameter"
+  statement:
+  SELECT org.acme.model.LoanAgreement
+    WHERE ((interest_rate < _$larger_interest_rate_PARAM) AND ( _$smallerinterest_ratePARAM < interest_rate))
+}
+
+
+//Get the BLR rate for the amount
+query BLRrate {
+  description: "Get the BLR rate for the amount required"
+  statement:
+  SELECT org.acme.model.LoanAgreement
+    WHERE (blr_rate == _$blr_rate_PARAM)
+}
+query blr_rate_larger {
+  description: "Get the blr rate that is higher than user insert"
+  statement:
+  SELECT org.acme.model.LoanAgreement
+    WHERE (blr_rate > _$blr_rate_PARAM)
+}
+query blr_rate_smaller {
+  description: "Get the blr rate that is smalller than user insert"
+  statement:
+  SELECT org.acme.model.LoanAgreement
+    WHERE (blr_rate < _$blr_rate_PARAM)
+}
+query blr_rate_in_between {
+  description: "Get the blr_rate that is in between both parameter"
+  statement:
+  SELECT org.acme.model.LoanAgreement
+    WHERE ((blr_rate < _$max_blr_rate_PARAM) AND (blr_rate > _$min_blr_rate_PARAM))
+}
+
+
+//flexi loan, yes or no parameter only.
+query flexi_loan {
+  description: "Get the query that is flexi loan"
+  statement:
+  SELECT org.acme.model.LoanAgreement
+    WHERE (flexi_loan == "YES")
+}
+query not_flexi_loan{
+  description: "Get the loan that is not flexi"
+  statement:
+  SELECT org.acme.model.LoanAgreement
+    WHERE (flexi_loan == "NO")
+}
+//s_n_p queries
+
+query snp_id {
+  description: "Get the snp through their id"
+  statement:
+  SELECT org.acme.model.s_n_p
+    WHERE (snp_id == _$snp_id_PARAM)
+}
+query snp_build_up_size {
+  description: "Get the s_N_p build up size "
+  statement:
+  SELECT org.acme.model.s_n_p
+    WHERE (built_up_area == _$build_up_are_PARAM)
+}
+query snp_agreed_price {
+  description: "Get the s_n_p agreed_price"
+  statement:
+  SELECT org.acme.model.s_n_p
+    WHERE (agreed_price == _$build_agreed_price_PARAM)
+}
+
+//query participants
+query participants_through_ic {
+  description: "Get the participants through NRIC"
+  statement:
+  SELECT org.acme.model.owner
+    WHERE (nric == _$search_with_nric)
+}
+query participants_through_id {
+  description: "Get the partiicpants ID"
+  statement:
+  SELECT org.acme.model.owner
+    WHERE (ownerID == _$search_owner_through_id_PARAM)
+}
+//query participants lawyer
+query participants_lawfirm_through_id {
+  description: "Get the law_firm lawyer_ID"
+  statement:
+  SELECT org.acme.model.Lawyer
+    WHERE (lawfirmID == _$search_lawfirm_through_id_PARAM)
+}
+query participants_lawyer__id {
+  description: "Get the lawyer id with law_firm_id"
+  statement:
+  SELECT org.acme.model.Lawyer
+    WHERE (lawfirmID == _$search_by_lawyer_id AND lawfirmID == _$search_lawfirm_through_id_PARAM )
+}
+
+query participants_lawyer_id {
+  description: "Get the lawyer id through company name"
+  statement:
+  SELECT org.acme.model.Lawyer
+    WHERE (company_lawyer_name == _$company_name_law AND lawyer_id == _$search_by_lawyer_id)
+}
+
+//query participants banks
+query participants_bank {
+  description: "Get the participants banks"
+  statement:
+  SELECT org.acme.model.Bank
+    WHERE (bankID == _$bank_id_param )
+}
+
+query participants_bank_name{
+  description: "Get the bank_name participated "
+  statement:
+  SELECT org.acme.model.Bank
+    WHERE (bank_name == _$bank_name_param )
+}
+
+query participants_bank_and_banker_id {
+  description: "Get the bank participated one and his id"
+  statement:
+  SELECT org.acme.model.Bank
+    WHERE (bankID == _$bank_id_param AND bankerID == _$banker_id_param)
+}
+
+query participants_bank_name_and_banker_id {
+  description: "Get the bank_name participated one and his id"
+  statement:
+  SELECT org.acme.model.Bank
+    WHERE (bank_name == _$bank_name_param AND bankerID == _$banker_id_param)
+}
+//query claim
+query claim_company {
+  description: "Get the company claim receipt"
+  statement:
+  SELECT org.acme.model.company_claim
+    WHERE (companyID == _$company_id_param AND ownerID == _$owner_id_param)
+}
+query claim_from_who {
+  description:"Get the claim from company"
+  statement:
+  SELECT org.acme.model.company_claim
+    WHERE (from_company_name == _$company_name_param AND from_companyID == _$comapny_ID_param)
+}
+query claim_company_employee_limit_smaller {
+  description: "Get the company that particular employee claim limit smaller"
+  statement:
+  SELECT org.acme.model.company_claim
+    WHERE (companyID == _$company_id_param AND claim_limit< _$claimlimit )
+}
+query claim_company_employee_limit_larger {
+  description: "Get the company that particular employee claim limit larger"
+  statement:
+  SELECT org.acme.model.company_claim
+    WHERE (companyID == _$company_id_param AND claim_limit> _$claimlimit )
+}
+query claim_company_employee_limit_equal {
+  description: "Get the company that particular employee claim limit equal"
+  statement:
+  SELECT org.acme.model.company_claim
+    WHERE (companyID == _$company_id_param AND claim_limit== _$claimlimit )
+}
+//query receipt
+query company_claim_receipt {
+  description:"Get the claim receipt of the company"
+  statement:
+  SELECT org.acme.model.receipt
+    WHERE (companyID == _$company_id_param AND receiptID == _$receiptID )
+}
+//qeury whoever that claimed income tax 
+query company_that_claimed{
+  description: "Get the company transacted that claimed from that company"
+  statement:
+  SELECT org.acme.model.claim_income_tax
+    WHERE (claim_from_which_company == _$claim_company_param)
+}
+
+
+//query receipt
+
+//query historians
+query showCommodityAllHistorians{ 
+  description: "Select commodity all historians" 
+  statement: 
+    SELECT org.hyperledger.composer.system.HistorianRecord FROM 
+HistorianRegistry
+          WHERE (transactionType == 'AddAsset' OR transactionType == 
+'UpdateAsset' OR transactionType == 'RemoveAsset') 
+} 
+
+query findCommmodityHistoriansWithTime{ 
+  description: "Find commodity historians after a specified time" 
+  statement: 
+    SELECT org.hyperledger.composer.system.HistorianRecord FROM 
+HistorianRegistry WHERE (transactionTimestamp > _$justnow) 
+}

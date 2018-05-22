@@ -1,0 +1,264 @@
+  
+
+namespace org.acme.model
+
+asset LandTitle identified by hakmilik_id {
+   --> owner ownerid
+  o String hakmilik_id
+  o Double cukai_tahunan
+  o String Negeri 
+  o String Daerah
+  o type_of_location location_type
+  o String no_lot
+  o String luas_lot
+  o kategori_tanah kategori_tanah
+  o DateTime daftaran_pada
+  o String no_lembaran_piawai
+  o String penggunaan_tanah optional
+  o String clauses optional
+}
+
+asset LoanAgreement identified by loan_id {
+  o String loan_id
+  --> owner owner
+  -->Bank bank
+  o bank_option the_approval
+  o Double loan_term
+  o Double loan_amount
+  o Double interest_rate
+  o Double blr_rate
+  o Double lock_in_period_in_year
+  o Double penalty
+  o String rgbt
+  o flexi_loan flexi_loan
+}
+
+asset s_n_p identified by snp_id {
+  o String snp_id
+  --> owner[] current_owner
+  --> owner[] new_owner optional
+  --> company company_owner optional
+  --> LandTitle landtitle
+  o Double agreed_price
+  o Double built_up_area
+  o DateTime transactionDateTime
+  o String witness optional
+  o String property_description optional
+  o String held_under_title optional
+  o String master_title optional
+  o Address postal_address optional
+  o Address vendor_address optional
+
+}
+
+transaction TradeHouse {
+  --> LandTitle landtitle
+  --> s_n_p snp
+  --> owner currentOwner
+  --> owner newOwner 
+  --> company company_owner optional  
+  --> Lawyer lawyer optional
+  --> LoanAgreement loan_status optional
+  o DateTime h_transactedDateTime  
+}
+
+transaction bank_loan_approval{
+  --> Bank bankID
+  --> LoanAgreement loanID
+  --> owner ownerID
+  o DateTime b_transactedDateTime 
+}
+
+transaction claim_company_expenses {
+  --> company_claim claimID
+  --> receipt receiptID
+  o DateTime claim_date_time
+}
+
+transaction claim_income_tax {
+  --> owner ownerID
+  --> company claim_from_which_company
+   o String the_category
+  --> receipt receiptID
+   o DateTime claim_date_time
+}
+
+transaction prompt_supplier_for_stock{
+  --> company buyer_id
+  --> supplier supplierID
+  --> request_stock request_stock_id
+}
+
+transaction send_invoice {
+  -->company buyer_id
+  -->supplier supplier_ID
+}
+
+participant supplier identified by supplierID{
+  o String supplierID
+  --> company company_ID
+  o Double account_balance
+}
+
+participant owner identified by ownerID {
+  o String ownerID
+  o String nric
+  o String firstName
+  o String lastName
+  o String email_address
+  o Double income_amount
+  o Double claimable_tax optional
+  o Double total_loan_amount optional
+  o employee_status type_of_employee
+  o Double ccris_score
+  o Double ctos_score
+  --> company current_company optional
+  o LandTitle[] amount_of_land_own optional
+}
+
+participant company identified by companyID {
+  o String companyID
+  o String company_name
+  --> owner[] employee_in_this_company_ID optional
+  o String[] company_category optional
+}
+
+asset request_stock identified by requeststockID{
+  o String requeststockID
+  -->stock stockID
+  -->supplier supplierID
+  -->company companyID
+  o restock restock_status
+  o DateTime restock_date_time_update
+  o String time_to_next_shipment optional
+  
+}
+asset stock identified by stockID {
+  o String stockID
+  --> company companyID
+  o String item_name
+  o Double stock_balance
+  o Double standard_level
+  o Double price_per_unit optional
+}
+
+asset invoice identified by invoiceID{
+  o String invoiceID
+  o Double total_price
+  o Double total_cost optional
+  -->company companyID
+  
+}
+asset receipt identified by receiptID {
+  o String receiptID
+  o Double total_price
+  o Double total_cost
+  --> company companyID
+  o claim_or_not claim_tax_or_claim_company optional
+}
+
+asset company_claim identified by employee_claimID {
+  o String employee_claimID
+  --> company companyID
+  --> owner ownerID
+  --> company from_companyID
+  o Double claim_limit optional
+}
+
+participant Lawyer identified by lawfirmID {
+  o String lawfirmID
+  --> company lawyer_firm_id
+  o String lawyer_id
+  o String company_lawyer_name  //lawyer company name alone.
+}
+
+participant Bank identified by bankID {
+  o String bankID
+  o String bank_name
+  o String bankerID
+  o Address bank_address
+}
+
+/**
+ * A concept for a simple street address
+ */
+concept Address {
+  o String city optional
+  o String country optional
+  o String locality optional
+  o String region optional
+  o String street optional
+  o String street2 optional
+  o String street3 optional
+  o String postalCode optional
+  o String postOfficeBoxNumber optional
+}
+
+
+concept BirthDetails {
+  o DateTime dateOfBirth optional
+  o String placeOfBirth optional
+}
+
+concept DeathDetails {
+  o DateTime dateOfDeath optional
+  o String placeOfDeath optional
+}
+
+concept ContactDetails {
+  o String email  optional
+  o String mobilePhone  optional
+  o String homePhone optional
+  o Address address optional
+}
+ enum restock{
+   o Required_restock
+   o Completed
+ }
+
+enum type_of_location {
+  o Bandar
+  o Pekan
+  o Mukim
+}
+
+enum kategori_tanah {
+  o Tiada
+  o Bangunan
+  o Pertanian
+  o Tanah
+}
+
+enum current_status {
+  o bank_loan
+  o lawyer
+  o land_office
+}
+
+enum bank_option {
+  o Yes
+  o ccris_not_approve
+  o ctos_not_approve
+}
+
+enum ContractStatus {
+  o SIGNED
+  o EXPIRED
+}
+
+enum flexi_loan {
+  o YES
+  o NO
+}
+
+enum employee_status {
+  o self_employed
+  o employee
+  o student
+}
+
+
+enum claim_or_not {
+ o income_tax
+ o company_expenses
+}
