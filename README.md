@@ -162,11 +162,4 @@ cat /Users/leowyennhan/Desktop/credentials/admin-pub.pem
 
 export NODE_CONFIG='{"composer":{"wallet":{"type":"composer-wallet-s3","options":{"bucketName":"one-identity-network"}}}}'
 
-User: leowyennhan@gmail.com
-Access Key ID :AKIAJSFIR47DT7BVO22A
-Secret Acess KEY: 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 
 
-User: leowyennhan
-arn:aws:iam::047628965148:user/leowyennhan
-Access Key ID : AKIAJDHZRCD5D5BB33XQ
-Secret Access Key : 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
